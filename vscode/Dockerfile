@@ -54,10 +54,17 @@ RUN apt-get update && apt-get -y install \
 	&& rm -rf /var/lib/apt/lists/*
 
 ENV HOME /home/user
+ENV GOPATH /home/user/go
 RUN useradd --create-home --home-dir $HOME user \
 	&& chown -R user:user $HOME
 
 COPY start.sh /usr/local/bin/start.sh
+
+WORKDIR /tmp
+
+RUN mkdir -p /tmp/build && curl -sSL -O https://dl.google.com/go/go1.9.3.linux-amd64.tar.gz
+RUN tar -C /usr/local -xzf go1.9.3.linux-amd64.tar.gz
+RUN rm -rf /tmp/build
 
 WORKDIR $HOME
 
